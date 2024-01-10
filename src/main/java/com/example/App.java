@@ -36,16 +36,25 @@ public class App {
 
                 File file = null;
 
-                if (cmd[1].substring(1).isEmpty()) {
+                if (cmd[1].substring(cmd[1].length()-1).equals("/")) {
                     file = new File("htdocs/index.html"); //se non c'è nulla metto la index di default
-                } else {
-                    file = new File("htdocs/"+cmd[1].substring(1)); //cerco il file con quell'indirizzo
+                } else{
+                    if(cmd[1].substring(1).equals("test")){
+                        out.writeBytes("HTTP/1.1 301 Moved Permanently\n");
+                        out.writeBytes("Location: https://www.google.com\n");
+                        out.writeBytes("\n");
+                    }else {
+                        file = new File("htdocs/"+cmd[1].substring(1)); //cerco il file con quell'indirizzo
+
+                    }
                 }
 
 
                 String rawResponse = "";
                 if (file.exists()) {
-                    sendBinaryFile(connection, file);
+                    
+                        sendBinaryFile(connection, file);
+                    
                 } else {
                     String response = "Il file non esiste.";
                     int responseLength = response.length();
